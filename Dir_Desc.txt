@@ -1,0 +1,3 @@
+﻿Κατάλογος API   -> Περιεχει το ASP.NET MVC RestFULL API Project
+Κατάλογος dump  -> Περιέχει την βάση δεδομένων που λειτουργει μαζι με το API 
+Κατάλογος WebApp-> Περιέχει το WebApp , Που επικοινωνει με το API για ανταλλαγη δεδομενων (Razor Pages + Web Pages ASP.NET + HTML + CSS + Boostrap )  
