@@ -31,6 +31,41 @@ namespace ApiProject.Controllers
             JsonSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
         }
+        /// <summary>
+        /// Gets the Customer ID , Return every Activity Ascosiated with him
+        /// </summary>
+        /// <param name="id"> The <see cref="Customer.CustomerID"/> </param>
+        ///<returns>
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <term>200(OK)</term>
+        ///             <description>Everything fine!</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>404(Not Found)</term>
+        ///             <description>id not found</description>
+        ///         </item>
+        ///          <item>
+        ///             <term>204(No Context)</term>
+        ///             <description>id found , but has no ascosiated Activities with it!</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>400(Bad GateWay)</term>
+        ///             <description>
+        ///                 <list type="bullet">
+        ///                     <item>
+        ///                      <term>Fatal Error</term>
+        ///                     </item>
+        ///                     <item>
+        ///                      <term>Different ID(Not Allowed)</term>
+        ///                     </item>
+        ///                 </list>
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// 
+        /// 
+        /// </returns>
         [Route("api/Activity/{id}")]
         [HttpGet]
         public JsonResult<Activity[]> Get(int id)
@@ -49,8 +84,18 @@ namespace ApiProject.Controllers
                     ReasonPhrase = "FATAL ERROR"
                 });
             }
+            if (ActivitiesFromDB.Length == 0)
+            {
+                if (con.CustomerContainer.Find(id) == null)
+                {
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
+                }
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NoContent));
+            }
             Debug.WriteLine("api/Activity/id Get Controller , Handles Appropiate Request , Returns 200! [From {0}]",Request.Headers.From);
             return Json(ActivitiesFromDB,JsonSettings);
         }
+
+        
     }
 }

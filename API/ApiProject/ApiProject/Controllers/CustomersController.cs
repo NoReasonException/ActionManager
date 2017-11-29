@@ -76,10 +76,12 @@ namespace ApiProject.Controllers
         }
 
         /// <summary>
+        /// 
         /// Utillity Method for obtain the Activities of eatch Customer ,
         /// </summary>
         /// <param name="id"> The ID of the Customer</param>
         /// <returns>A List with Activities Ascociated with the ID</returns>
+        /// TODO:Code Duplication , Transfer this to ActivityController
         [NonAction]
         public System.Collections.Generic.List<Activity> getActivitiesByID(int id)
         {
