@@ -1,15 +1,21 @@
-﻿using System;
+﻿using ApiProject.DBClasses;
+using ApiProject.DBClasses.DB_EFContext;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace ApiProject.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/Customers")]
-    public class CustomersController : Controller
+    public class CustomersController : ApiController
     {
+        
+
     }
 }
