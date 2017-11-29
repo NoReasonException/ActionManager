@@ -30,6 +30,11 @@ namespace ApiProject.DBClasses
             this.StartDate      = StartDate;
             this.EndDate        = EndDate;
         }
+        public override string ToString()
+        {
+            return System.String.Format("Activity ID:{0} Description:{1}  StartDate:{2} EndDate{3} ", Utills.Utills.IFNULL(this.ActivityID),
+                Utills.Utills.IFNULL(this.Description), Utills.Utills.IFNULL(this.StartDate),Utills.Utills.IFNULL(this.EndDate));
+        }
         public Activity() { }
     }
 }

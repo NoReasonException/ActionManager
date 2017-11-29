@@ -26,7 +26,6 @@ namespace ApiProject.Controllers
             JsonSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
         }
-
         /// <summary> The Main GET Method , Returns All the Customers.</summary>
         /// <remarks> The Main GET Method , Its gonna used by the main grid , 
         ///     NOTE: This call returns only the Customer Object , with no Activities Asciosiated with it , 
@@ -97,30 +96,30 @@ namespace ApiProject.Controllers
         [Route("api/Customers/{id}")]
         public JsonResult<Customer> GetByID(int id)
         {
-            Customer retval = null;
-            try
-            {
-                retval = con.CustomerContainer.Find(id);
+            try{
+                Customer retval = con.CustomerContainer.Find(id);
+                if (retval == null)
+                {
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        ReasonPhrase = "NOT FOUND"
+
+                    });
+                }
+                retval.Activities = this.getActivitiesByID(id);
+                return this.Json(retval, JsonSettings);
 
             }
             catch (InvalidOperationException e)
             {
+                Debug.WriteLine(e.Message);
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadGateway)
                 {
                     ReasonPhrase = "Database Consistency is violated , Contact with your sysadmin for further instructions... "
 
                 });
             }
-            if (retval == null)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound)
-                {
-                    ReasonPhrase = "NOT FOUND"
 
-                });
-            }
-            retval.Activities = this.getActivitiesByID(id);
-            return this.Json(retval, JsonSettings);
         }
         /// <summary>Creates New Customer , Takes Data via Form</summary>
         /// <param name="cust"> The <see cref="ApiProject.DBClasses.Customer"/> Object to add in the database!</param>

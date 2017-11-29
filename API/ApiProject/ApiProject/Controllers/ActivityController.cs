@@ -14,6 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
+using ApiProject.Utills;
 
 namespace ApiProject.Controllers
 {
@@ -88,10 +89,14 @@ namespace ApiProject.Controllers
         }
         [Route("api/Activity/{id}")]
         [HttpPost]
-        public IHttpActionResult PostNewActivity(int id, Activity ActivityFromForm)
+        public IHttpActionResult PostNewActivity(int id,Activity ActivityFromForm)
         {
-            Debug.WriteLine("api/Activity/id Post Controller:   Incoming Request POST_NEW_ACTIVITY with ID{0} from {1}", id, Request.Headers.From);
-            if (!ModelState.IsValid || ActivityFromForm == null) return BadRequest();
+            Debug.WriteLine("api/Activity/id Post Controller:Incoming Request POST_NEW_ACTIVITY with Activity", Utills.Utills.IFNULL(ActivityFromForm));
+
+            Customer CustomerFromDB = con.CustomerContainer.Find(id);
+            if (CustomerFromDB == null) return NotFound();
+            //if (!ModelState.IsValid || ActivityFromForm == null) return BadRequest();
+            ActivityFromForm.Customer = CustomerFromDB;
             con.ActivityContainer.Add(ActivityFromForm);
             try
             {
@@ -100,6 +105,8 @@ namespace ApiProject.Controllers
             }
             catch (Exception e)//Todo:Catch Specific Exceptions
             {
+                Debug.WriteLine("api/Activity/id Post Controller:   Faces Fatal Error{0} , Returns 400(Bad)! [From {1}]",e.Message, Request.Headers.From);
+
                 return BadRequest();
             }
 

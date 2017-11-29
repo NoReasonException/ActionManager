@@ -28,7 +28,7 @@ namespace ApiProject.DBClasses
         public Customer() { }
         public override string ToString()
         {
-            return System.String.Format("Customer ID:{0} Name:{1} , Addr:{2} ", Utills.Utills.IFNULL(this.CustomerID), 
+            return System.String.Format("Customer ID:{0} Name:{1}  Addr:{2} ", Utills.Utills.IFNULL(this.CustomerID), 
                 Utills.Utills.IFNULL(this.Name), Utills.Utills.IFNULL(this.Address));
         }
         
