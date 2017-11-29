@@ -101,7 +101,6 @@ namespace ApiProject.Controllers
             try
             {
                 con.SaveChanges();
-
             }
             catch (Exception e)//Todo:Catch Specific Exceptions
             {
@@ -109,9 +108,7 @@ namespace ApiProject.Controllers
 
                 return BadRequest();
             }
-
             Debug.WriteLine("api/Activity/id Post Controller:   Handles Appropiate Request , Returns 200! [From {0}]", Request.Headers.From);
-
             return Ok();
         }
     }
