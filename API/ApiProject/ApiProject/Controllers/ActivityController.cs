@@ -51,16 +51,7 @@ namespace ApiProject.Controllers
         ///         </item>
         ///         <item>
         ///             <term>400(Bad GateWay)</term>
-        ///             <description>
-        ///                 <list type="bullet">
-        ///                     <item>
-        ///                      <term>Fatal Error</term>
-        ///                     </item>
-        ///                     <item>
-        ///                      <term>Different ID(Not Allowed)</term>
-        ///                     </item>
-        ///                 </list>
-        ///             </description>
+        ///             <description>Fatal , Unkown error happened</description>
         ///         </item>
         ///     </list>
         /// 
@@ -70,7 +61,7 @@ namespace ApiProject.Controllers
         [HttpGet]
         public JsonResult<Activity[]> Get(int id)
         {
-            Debug.WriteLine("api/Activity/id Get Controller: Incoming Request GET_ALL_ACTIVITIES with ID{0} from {1}",id, Request.Headers.From);
+            Debug.WriteLine("api/Activity/id Get Controller:    Incoming Request GET_ALL_ACTIVITIES with ID{0} from {1}", id, Request.Headers.From);
 
             Activity[] ActivitiesFromDB;
             try
@@ -92,10 +83,30 @@ namespace ApiProject.Controllers
                 }
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NoContent));
             }
-            Debug.WriteLine("api/Activity/id Get Controller , Handles Appropiate Request , Returns 200! [From {0}]",Request.Headers.From);
+            Debug.WriteLine("api/Activity/id Get Controller:     Handles Appropiate Request , Returns 200! [From {0}]",Request.Headers.From);
             return Json(ActivitiesFromDB,JsonSettings);
         }
+        [Route("api/Activity/{id}")]
+        [HttpPost]
+        public IHttpActionResult PostNewActivity(int id, Activity ActivityFromForm)
+        {
+            Debug.WriteLine("api/Activity/id Post Controller:   Incoming Request POST_NEW_ACTIVITY with ID{0} from {1}", id, Request.Headers.From);
+            if (!ModelState.IsValid || ActivityFromForm == null) return BadRequest();
+            con.ActivityContainer.Add(ActivityFromForm);
+            try
+            {
+                con.SaveChanges();
 
-        
+            }
+            catch (Exception e)//Todo:Catch Specific Exceptions
+            {
+                return BadRequest();
+            }
+
+            Debug.WriteLine("api/Activity/id Post Controller:   Handles Appropiate Request , Returns 200! [From {0}]", Request.Headers.From);
+
+            return Ok();
+        }
     }
+    
 }

@@ -138,11 +138,11 @@ namespace ApiProject.Controllers
             {
                 con.SaveChanges();
 
-            }catch(Exception e)//TODO:Fix Catch Specific Exceptions...
+            }catch(Exception e)//TODO:Catch Specific Exceptions...
             {
                 return BadRequest();
             }
-            Debug.WriteLine("Object {0} Injected into DB (id={1})", cust.Name,cust.CustomerID);
+            Debug.WriteLine("Object {0} Injected into DB ", cust);
             return Ok();
         }
         /// <summary>Override the Properties of an <see cref="ApiProject.DBClasses.Customer"/> Object !</summary>
