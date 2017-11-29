@@ -74,6 +74,54 @@ namespace ApiProject.Controllers
             return retval;
         }
 
+        /// <summary>
+        /// Utillity Method for obtain the Activities of eatch Customer ,
+        /// </summary>
+        /// <param name="id"> The ID of the Customer</param>
+        /// <returns>A List with Activities Ascociated with the ID</returns>
+        [NonAction]
+        public System.Collections.Generic.List<Activity> getActivitiesByID(int id)
+        {
+            if (con.CustomerContainer.Find(id) == null) return null;
+            return con.ActivityContainer.Where(o => o.Customer.CustomerID == id).ToList<Activity>();
+        }
+        /// <summary>
+        /// GetByID Method , Use this for obtain all information Ascociated with an Cuctomer!
+        ///
+        /// 
+        /// </summary>
+        /// <param name="id">The ID of the Customer</param>
+        /// <returns>Well...Everything as JSON !</returns>
+        [HttpGet]
+        [Route("api/Customers/{id}")]
+        public JsonResult<Customer> GetByID(int id)
+        {
+            Customer retval = null;
+            try
+            {
+                retval = con.CustomerContainer.Find(id);
+
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadGateway)
+                {
+                    ReasonPhrase = "Database Consistency is violated , Contact with your sysadmin for further instructions... "
+
+                });
+            }
+            if (retval == null)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    ReasonPhrase = "NOT FOUND"
+
+                });
+            }
+            retval.Activities = this.getActivitiesByID(id);
+            return this.Json(retval, JsonSettings);
+        }
+
 
 
 
