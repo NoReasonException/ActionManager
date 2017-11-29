@@ -121,6 +121,19 @@ namespace ApiProject.Controllers
             retval.Activities = this.getActivitiesByID(id);
             return this.Json(retval, JsonSettings);
         }
+        [HttpPost]
+        [Route("api/Customers")]
+        public IHttpActionResult PostCustomer(Customer cust)
+        {
+            if (!ModelState.IsValid||cust==null)
+            {
+                return BadRequest();
+            }
+            con.CustomerContainer.Add(cust);
+            con.SaveChanges();
+            Debug.WriteLine("Object {0} Injected into DB (id={1})", cust.Name,cust.CustomerID);
+            return Ok();
+        }
 
 
 
