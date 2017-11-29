@@ -87,6 +87,25 @@ namespace ApiProject.Controllers
             Debug.WriteLine("api/Activity/id Get Controller:     Handles Appropiate Request , Returns 200! [From {0}]",Request.Headers.From);
             return Json(ActivitiesFromDB,JsonSettings);
         }
+        /// <summary>Posts a new Activity for the <see cref="Customer"/> Customer with Id As Specified in <paramref name="id"/></summary>
+        /// <param name="id">The <see cref="Customer"/> ID </param>
+        /// <param name="ActivityFromForm"> The <see cref="Activity"/> Object To Add</param>
+        /// <returns>
+        ///      <list type="bullet">
+        ///         <item>
+        ///             <term>200(OK)</term>
+        ///             <description>Everything fine!</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>404(Not Found)</term>
+        ///             <description>id not found</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>400(Bad GateWay)</term>
+        ///             <description>Fatal , Unkown error happened</description>
+        ///         </item>
+        ///     </list>
+        /// </returns>
         [Route("api/Activity/{id}")]
         [HttpPost]
         public IHttpActionResult PostNewActivity(int id,Activity ActivityFromForm)
@@ -111,6 +130,28 @@ namespace ApiProject.Controllers
             Debug.WriteLine("api/Activity/id Post Controller:   Handles Appropiate Request , Returns 200! [From {0}]", Request.Headers.From);
             return Ok();
         }
+        [Route("api/Activity/{ActivityId}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteActivityByID(int ActivityId)
+        {
+            Activity ActivityFromDB_ToAttach = con.ActivityContainer.Find(ActivityId);
+            if (ActivityFromDB_ToAttach == null) return NotFound();
+            Activity Act =con.ActivityContainer.Attach(ActivityFromDB_ToAttach);
+            con.ActivityContainer.Remove(Act);
+            try
+            {
+                con.SaveChanges();
+            }
+            catch (Exception e)//Todo:Catch Specific Exceptions
+            {
+                Debug.WriteLine("api/Activity/id Delete Controller:   Faces Fatal Error{0} , Returns 400(Bad)! [From {1}]", e.Message, Request.Headers.From);
+
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+
     }
     
 }
