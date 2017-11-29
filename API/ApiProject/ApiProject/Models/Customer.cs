@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-
+using ApiProject.Utills;
 namespace ApiProject.DBClasses
 {
 
@@ -26,5 +26,11 @@ namespace ApiProject.DBClasses
             this.Activities = new System.Collections.Generic.List<Activity>();
         }
         public Customer() { }
+        public override string ToString()
+        {
+            return System.String.Format("Customer ID:{0} Name:{1} , Addr:{2} ", Utills.Utills.IFNULL(this.CustomerID), 
+                Utills.Utills.IFNULL(this.Name), Utills.Utills.IFNULL(this.Address));
+        }
+        
     }
 }

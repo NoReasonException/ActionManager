@@ -36,6 +36,7 @@ namespace ApiProject.Controllers
         /// <see cref="ApiProject.DBClasses.DB_EFContext.Context"/>
         /// <returns>A Json Result</returns>
         [HttpGet]
+        [Route("api/Customers/")]
         public JsonResult<Customer[]> Get()
         {
 
@@ -87,8 +88,6 @@ namespace ApiProject.Controllers
         }
         /// <summary>
         /// GetByID Method , Use this for obtain all information Ascociated with an Cuctomer!
-        ///
-        /// 
         /// </summary>
         /// <param name="id">The ID of the Customer</param>
         /// <returns>Well...Everything as JSON !</returns>
@@ -121,6 +120,9 @@ namespace ApiProject.Controllers
             retval.Activities = this.getActivitiesByID(id);
             return this.Json(retval, JsonSettings);
         }
+        /// <summary>Creates New Customer , Takes Data via Form</summary>
+        /// <param name="cust"> The <see cref="ApiProject.DBClasses.Customer"/> Object to add in the database!</param>
+        /// <returns>200 If everything is Okay ,400 if critical data is missing</returns>
         [HttpPost]
         [Route("api/Customers")]
         public IHttpActionResult PostCustomer(Customer cust)
@@ -130,8 +132,70 @@ namespace ApiProject.Controllers
                 return BadRequest();
             }
             con.CustomerContainer.Add(cust);
-            con.SaveChanges();
+            try
+            {
+                con.SaveChanges();
+
+            }catch(Exception e)//TODO:Fix Catch Specific Exceptions...
+            {
+                return BadRequest();
+            }
             Debug.WriteLine("Object {0} Injected into DB (id={1})", cust.Name,cust.CustomerID);
+            return Ok();
+        }
+        /// <summary>Override the Properties of an <see cref="ApiProject.DBClasses.Customer"/> Object !</summary>
+        /// <param name="id"></param>
+        /// <param name="cust"></param>
+        /// <returns>
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <term>200(OK)</term>
+        ///             <description>Everything fine!</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>404(Not Found)</term>
+        ///             <description>id not found</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>400(Bad GateWay)</term>
+        ///             <description>
+        ///                 <list type="bullet">
+        ///                     <item>
+        ///                      <term>Fatal Error</term>
+        ///                     </item>
+        ///                     <item>
+        ///                      <term>Different ID(Not Allowed)</term>
+        ///                     </item>
+        ///                 </list>
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// 
+        /// 
+        /// </returns>
+        [HttpPut]
+        [Route("api/Customers/{id}")]
+        public IHttpActionResult PutCustomer(int id,Customer cust)
+        {
+            Customer CustomerFromDB = con.CustomerContainer.Find(id);
+            if (!ModelState.IsValid || cust == null)    return BadRequest();
+            if (CustomerFromDB == null)                 return NotFound();
+            if (cust.CustomerID != id)                  return BadRequest();
+            Debug.WriteLine("Before: "+CustomerFromDB);
+            if (cust.Address != null)
+            {
+                CustomerFromDB.Address = cust.Address;
+            }
+            if (cust.Name != null){
+                CustomerFromDB.Name = cust.Name;
+            }
+            Debug.WriteLine("After: "+CustomerFromDB);
+            con.SaveChanges(); //TODO : try/catch
+
+
+
+
+
             return Ok();
         }
 
