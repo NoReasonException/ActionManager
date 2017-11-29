@@ -15,7 +15,19 @@ namespace ApiProject.Controllers
 {
     public class CustomersController : ApiController
     {
+        static Context con = new Context();
+        static Newtonsoft.Json.JsonSerializerSettings JsonSettings;
+
+        static CustomersController()
+        {
+            con = new Context();
+            JsonSettings = new Newtonsoft.Json.JsonSerializerSettings();
+            JsonSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+        }
+
         
+
 
     }
 }
