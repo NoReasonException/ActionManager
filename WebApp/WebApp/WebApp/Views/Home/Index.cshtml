@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home";
-    
+
 }
 <link rel="stylesheet" href="~/css/HomeStyle.css" />
 
@@ -13,7 +13,37 @@
             <div class="container">
                 <table class"TableStyle">
                     <tr><td>Κωδικός</td><td>Όνομα</td><td>Διεύθυνση</td></tr>
-                    <tr><td>117</td><td>Stefanos</td><td>Ippokratous 51</td></tr>
+                    @{
+                        bool isID = true;
+                        foreach (List<System.String> temp in ViewBag.Str)
+                        {
+                            @Html.Raw("<tr>");
+
+                            foreach (System.String data in temp)
+                            {
+                                @Html.Raw("<td>");
+                                if (isID)
+                                {
+                                    @Html.Raw("<a href=\"EditCustomer&id="+data+"\">");
+                                }
+                                
+                                @String.Format("{0}",data);
+                                if (isID)
+                                {
+                                    //@Html.Raw("</a>");
+                                    isID = false;
+
+                                }
+                                @Html.Raw("</td>");
+
+                            }
+                            isID = true;
+                            @Html.Raw("</tr>");
+
+
+
+                        }
+                    }
 
                 </table>
             </div>

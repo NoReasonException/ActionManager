@@ -9,6 +9,11 @@ namespace WebApp.Utills
 {
     public class RequestUtills
     {
+        /// <summary>
+        /// Sends a GET Request 
+        /// </summary>
+        /// <param name="Url">The Target URL</param>
+        /// <returns></returns>
         public static  System.String Get(System.String Url)
         {
             HttpWebRequest GetRequest = (HttpWebRequest)WebRequest.Create(Url);

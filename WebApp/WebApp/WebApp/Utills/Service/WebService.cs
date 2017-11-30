@@ -42,7 +42,7 @@ namespace WebApp.Utills.Service
             return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers");
         }
         /// <summary>
-        /// Get Record by ID (With Activities Included!)
+        /// Get Record by ID 
         /// Calls GET <urlOfService>/api/Customers/{Id}
         /// </summary>
         /// <param name="Id"> The ID of customer</param>
