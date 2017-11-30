@@ -103,7 +103,7 @@ namespace ApiProject.Controllers
         ///         </item>
         ///         <item>
         ///             <term>400(Bad GateWay)</term>
-        ///             <description>Fatal , Unkown error happened</description>
+        ///             <description>Fatal , Unkown error happened or StartDate>=EndDate(after bugfix v0.1)</description>
         ///         </item>
         ///     </list>
         /// </returns>
@@ -116,6 +116,7 @@ namespace ApiProject.Controllers
 
             Customer CustomerFromDB = con.CustomerContainer.Find(id);
             if (CustomerFromDB == null) return NotFound();
+            if (!Utills.Utills.isDateTimesOkay(ActivityFromForm.StartDate, ActivityFromForm.EndDate)) return BadRequest();
             //if (!ModelState.IsValid || ActivityFromForm == null) return BadRequest(); //<---- TODO : Fix this 
             ActivityFromForm.Customer = CustomerFromDB;
             con.ActivityContainer.Add(ActivityFromForm);
@@ -182,7 +183,7 @@ namespace ApiProject.Controllers
         /// <param name="ActivityId"> the <see cref="Activity.ActivityID"/> Property of the Event to change</param>
         /// <param name="ActivityFromForm"> the <see cref="Activity"/> Object to retrieve new information!</param>
         /// <returns>
-        ///      <list type="bullet">
+        ///     <list type="bullet">
         ///         <item>
         ///             <term>200(OK)</term>
         ///             <description>Everything fine!</description>
@@ -193,9 +194,26 @@ namespace ApiProject.Controllers
         ///         </item>
         ///         <item>
         ///             <term>400(Bad GateWay)</term>
-        ///             <description>Fatal , Unkown error happened</description>
+        ///             <description>
+        ///                 <list type="bullet">
+        ///                     <item>
+        ///                      <term>Fatal Error</term>
+        ///                     </item>
+        ///                     <item>
+        ///                      <term>Attemt to change ID</term>
+        ///                     </item>
+        ///                     <item>
+        ///                      <term>Attemt to send Customer field</term>
+        ///                     </item>
+        ///                     <item>
+        ///                      <term>No Send Form Data at all...</term>
+        ///                     </item>
+        ///                 </list>
+        ///             </description>
         ///         </item>
         ///     </list>
+        /// 
+        /// 
         /// </returns>
         [Route("api/Activity/{ActivityId}")]
         [HttpPut]
