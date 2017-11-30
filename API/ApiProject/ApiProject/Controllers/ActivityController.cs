@@ -130,13 +130,31 @@ namespace ApiProject.Controllers
             Debug.WriteLine("api/Activity/id Post Controller:   Handles Appropiate Request , Returns 200! [From {0}]", Request.Headers.From);
             return Ok();
         }
+        /// <summary>Deletes a Activity by its ID</summary>
+        /// <param name="ActivityId">The ID of the Activity</param>
+        /// <returns>
+        ///      <list type="bullet">
+        ///         <item>
+        ///             <term>200(OK)</term>
+        ///             <description>Everything fine!</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>404(Not Found)</term>
+        ///             <description>id not found</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>400(Bad GateWay)</term>
+        ///             <description>Fatal , Unkown error happened</description>
+        ///         </item>
+        ///     </list>
+        /// </returns>
         [Route("api/Activity/{ActivityId}")]
         [HttpDelete]
         public IHttpActionResult DeleteActivityByID(int ActivityId)
         {
             Activity ActivityFromDB_ToAttach = con.ActivityContainer.Find(ActivityId);
             if (ActivityFromDB_ToAttach == null) return NotFound();
-            Activity Act =con.ActivityContainer.Attach(ActivityFromDB_ToAttach);
+            Activity Act =con.ActivityContainer.Attach(ActivityFromDB_ToAttach);//TODO : Check if nessesary... i think not.. but i am tired ...
             con.ActivityContainer.Remove(Act);
             try
             {
