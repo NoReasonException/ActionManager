@@ -9,7 +9,7 @@ namespace WebApp.Utills
 {
     public class RequestUtills
     {
-        public System.String Get(System.String Url)
+        public static  System.String Get(System.String Url)
         {
             HttpWebRequest GetRequest = (HttpWebRequest)WebRequest.Create(Url);
             GetRequest.AutomaticDecompression = DecompressionMethods.GZip; // Turn Automatic Decompress On! ()

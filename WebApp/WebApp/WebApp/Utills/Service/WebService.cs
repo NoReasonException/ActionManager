@@ -7,9 +7,27 @@ namespace WebApp.Utills.Service
 {
     public class WebService
     {
-        /*public static System.String GetAllRecords(System.String ServiceUrl)
+        static System.String ServiceUrl;
+        static WebService()
         {
+            ServiceUrl = System.String.Empty;
             
-        }*/
-    }
+        }
+        
+
+        public static System.String GetAllRecords(System.String ServiceLocation)
+        {
+            return WebApp.Utills.RequestUtills.Get(ServiceLocation + "/api/Customers");
+
+        }
+        private static void Check()
+        {
+            if (ServiceUrl.Equals(System.String.Empty)) throw new InvalidOperationException("Set the WebService.ServiceUrl First!");
+            
+        }
+        public static System.String GetAllRecords() 
+        {
+            Check();
+            return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers");
+        }
 }
