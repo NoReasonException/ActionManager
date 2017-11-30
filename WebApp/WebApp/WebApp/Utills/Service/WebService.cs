@@ -30,4 +30,11 @@ namespace WebApp.Utills.Service
             Check();
             return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers");
         }
+
+        public static System.String GetRecordByID(int Id)
+        {
+            Check();
+            return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers/" + Id.ToString());
+        }
+    }
 }
