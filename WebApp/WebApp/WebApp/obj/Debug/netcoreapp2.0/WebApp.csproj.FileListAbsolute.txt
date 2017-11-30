@@ -1,0 +1,11 @@
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\bin\Debug\netcoreapp2.0\WebApp.deps.json
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\bin\Debug\netcoreapp2.0\WebApp.runtimeconfig.json
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\bin\Debug\netcoreapp2.0\WebApp.runtimeconfig.dev.json
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\bin\Debug\netcoreapp2.0\WebApp.dll
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\bin\Debug\netcoreapp2.0\WebApp.pdb
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\obj\Debug\netcoreapp2.0\WebApp.csprojResolveAssemblyReference.cache
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\obj\Debug\netcoreapp2.0\WebApp.csproj.CoreCompileInputs.cache
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\obj\Debug\netcoreapp2.0\WebApp.AssemblyInfoInputs.cache
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\obj\Debug\netcoreapp2.0\WebApp.AssemblyInfo.cs
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\obj\Debug\netcoreapp2.0\WebApp.dll
+C:\Users\StefStef\Desktop\ActionManager\WebApp\WebApp\WebApp\obj\Debug\netcoreapp2.0\WebApp.pdb
