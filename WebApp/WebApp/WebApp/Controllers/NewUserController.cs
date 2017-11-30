@@ -21,11 +21,15 @@ namespace WebApp.Controllers
         [NonAction]
         public bool PostNew()
         {
+            if (!CheckPostRequest()) return false;
+            
             return true;
         }
         public bool CheckPostRequest()
         {
-
+            if (String.IsNullOrEmpty(Request.Form["Name"])) return false;
+            if (String.IsNullOrEmpty(Request.Form["Address"])) return false;
+            return true;
         }
     }
 }

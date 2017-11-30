@@ -2,9 +2,19 @@
 @{
     ViewData["Title"] = "Δημιουργία Νέου χρήστη";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    if (ViewBag.Success != null && ViewBag.Success)
+    if (ViewBag.Success != null)
     {
-        @Html.Raw("<h1>Επιτυχία!</h1><br><h4>Θα θέλατε να δημιουργήσετε ξανά πελάτη?..</h4>");
+        if (ViewBag.Success)
+        {
+            @Html.Raw("<h1>Επιτυχία!</h1><br><h4>Θα θέλατε να δημιουργήσετε ξανά πελάτη?..</h4>");
+
+        }
+        else
+        {
+            @Html.Raw("<h1>Αποτυχία!</h1><br><h4>Συμπληρώστε σωστά τα απαιτούμενα πεδία..</h4>");
+
+
+        }
     }
 }
 
@@ -16,13 +26,13 @@
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">Όνοματεπώνυμο</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputEmail3" placeholder="Πχ : Στέφανος Στεφάνου">
+                <input type="text" class="form-control" id="inputEmail3" name="Name" placeholder="Πχ : Στέφανος Στεφάνου">
             </div>
         </div>
         <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">Διεύθυνση</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword3" placeholder="Πχ : Ιπποκράτους 51 , Κερατσίνι , 18756">
+                <input type="text" class="form-control" id="inputPassword3" name="Address"  placeholder="Πχ : Ιπποκράτους 51 , Κερατσίνι , 18756">
             </div>
         </div>
         

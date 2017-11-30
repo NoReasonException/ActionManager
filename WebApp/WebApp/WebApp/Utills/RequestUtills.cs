@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace WebApp.Utills
@@ -20,6 +21,27 @@ namespace WebApp.Utills
             GetRequest.AutomaticDecompression = DecompressionMethods.GZip; // Turn Automatic Decompress On! ()
 
             HttpWebResponse ReturnResponce = (HttpWebResponse)GetRequest.GetResponse();
+            StreamReader Reader = new StreamReader(ReturnResponce.GetResponseStream());
+            return Reader.ReadToEnd();
+        }
+        /// <summary>
+        /// Sends A post request with application/x-www-form-urlencoded
+        /// </summary>
+        /// <param name="Url">Target Url</param>
+        /// <param name="FormData">Raw Form Data</param>
+        /// <returns></returns>
+        public static System.String PostForm(System.String Url,System.String FormData)
+        {
+            HttpWebRequest PostRequest = (HttpWebRequest)WebRequest.Create(Url);
+            byte [] data = Encoding.ASCII.GetBytes(FormData);
+            PostRequest.Method = "POST";
+            PostRequest.ContentType = "application/x-www-form-urlencoded";
+            PostRequest.ContentLength = data.Length;
+            using (var stream = PostRequest.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+            HttpWebResponse ReturnResponce = (HttpWebResponse)PostRequest.GetResponse();
             StreamReader Reader = new StreamReader(ReturnResponce.GetResponseStream());
             return Reader.ReadToEnd();
         }
