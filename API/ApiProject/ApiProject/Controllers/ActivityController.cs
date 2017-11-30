@@ -32,6 +32,7 @@ namespace ApiProject.Controllers
             JsonSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
         }
+        
         /// <summary>
         /// Gets the Customer ID , Return every Activity Ascosiated with him
         /// </summary>
@@ -106,6 +107,7 @@ namespace ApiProject.Controllers
         ///         </item>
         ///     </list>
         /// </returns>
+        /// ///todo -> check if startDate>endDate
         [Route("api/Activity/{id}")]
         [HttpPost]
         public IHttpActionResult PostNewActivity(int id,Activity ActivityFromForm)
@@ -114,7 +116,7 @@ namespace ApiProject.Controllers
 
             Customer CustomerFromDB = con.CustomerContainer.Find(id);
             if (CustomerFromDB == null) return NotFound();
-            //if (!ModelState.IsValid || ActivityFromForm == null) return BadRequest();
+            //if (!ModelState.IsValid || ActivityFromForm == null) return BadRequest(); //<---- TODO : Fix this 
             ActivityFromForm.Customer = CustomerFromDB;
             con.ActivityContainer.Add(ActivityFromForm);
             try
@@ -130,7 +132,10 @@ namespace ApiProject.Controllers
             Debug.WriteLine("api/Activity/id Post Controller:   Handles Appropiate Request , Returns 200! [From {0}]", Request.Headers.From);
             return Ok();
         }
-        /// <summary>Deletes a Activity by its ID</summary>
+        /// <summary>Deletes a Activity by its ID
+        ///         <h3>Important Note! This Method Accept ACTIVITY_ID in contract with all other methods , witch Accepts CustomerID</h3>
+        /// </summary>
+        /// 
         /// <param name="ActivityId">The ID of the Activity</param>
         /// <returns>
         ///      <list type="bullet">
@@ -169,6 +174,60 @@ namespace ApiProject.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Changes some crucial Activity Properties!
+        /// Note -> Change Events Customer not supported, in fact,dont send the Customer field at all , else it return BadRequest!
+        /// Note->  Change ID Of course not suppoted , it throws BadRequest if you attemt it!
+        /// </summary>
+        /// <param name="ActivityId"> the <see cref="Activity.ActivityID"/> Property of the Event to change</param>
+        /// <param name="ActivityFromForm"> the <see cref="Activity"/> Object to retrieve new information!</param>
+        /// <returns>
+        ///      <list type="bullet">
+        ///         <item>
+        ///             <term>200(OK)</term>
+        ///             <description>Everything fine!</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>404(Not Found)</term>
+        ///             <description>ActivityId not found</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>400(Bad GateWay)</term>
+        ///             <description>Fatal , Unkown error happened</description>
+        ///         </item>
+        ///     </list>
+        /// </returns>
+        [Route("api/Activity/{ActivityId}")]
+        [HttpPut]
+        public IHttpActionResult PutActivity(int ActivityId,Activity ActivityFromForm)
+        {
+            Debug.WriteLine("api/Activity/id Put Controller:Incoming Request POST_NEW_ACTIVITY with Activity", Utills.Utills.IFNULL(ActivityFromForm));
+            if (ActivityFromForm == null) return BadRequest();
+            Activity ActivityFromDB = con.ActivityContainer.Find(ActivityId);
+            if (ActivityFromDB == null) return NotFound();
+            if (ActivityFromForm.ActivityID != ActivityId) return BadRequest();// ChangeID , Not Allowed yet(?)
+
+            if (ActivityFromForm.Description != null)
+            {
+                ActivityFromDB.Description = ActivityFromForm.Description;
+            }
+            if (ActivityFromForm.Customer != null)
+            {
+                return BadRequest();
+            }
+            if (Utills.Utills.isDateTimesOkay(ActivityFromForm.StartDate, ActivityFromForm.EndDate))
+            {
+                ActivityFromDB.StartDate = ActivityFromForm.StartDate;
+                ActivityFromDB.EndDate = ActivityFromForm.EndDate;
+            }
+            else
+            {
+                return BadRequest();
+            }
+            Debug.WriteLine("api/Activity/id Put Controller:   Handles Appropiate Request , Returns 200! [From {0}]", Request.Headers.From);
+
+            return Ok();
+        }
 
     }
     

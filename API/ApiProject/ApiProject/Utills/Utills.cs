@@ -12,5 +12,9 @@ namespace ApiProject.Utills
             if (toStr == null) return "NULL";
             return toStr.ToString();
         }
+        public static bool isDateTimesOkay(System.DateTime StartDate, System.DateTime EndDate)
+        {
+            return StartDate != null && EndDate != null && System.DateTime.Compare(StartDate, EndDate) < 0;
+        }
     }
 }
