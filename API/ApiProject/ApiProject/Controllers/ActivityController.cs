@@ -2,37 +2,16 @@
 using System.Web.Http;
 using ApiProject.DBClasses.DB_EFContext;
 using System.Web.Http.Results;
-using ApiProject.DBClasses;
-using ApiProject.DBClasses.DB_EFContext;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Results;
-using ApiProject.Utills;
-
 namespace ApiProject.Controllers
 {
     
     public class ActivityController : ApiController
-    {
-        ///TODO:Code Duplication -> FixIT! One Common Static con and JsonSettings for both Controllers!
-        static Context con = new Context();
-        static Newtonsoft.Json.JsonSerializerSettings JsonSettings;
-
-        static ActivityController()
-        {
-            con = new Context();
-            JsonSettings = new Newtonsoft.Json.JsonSerializerSettings();
-            JsonSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-
-        }
-        
+    { 
         /// <summary>
         /// Gets the Customer ID , Return every Activity Ascosiated with him
         /// </summary>
@@ -68,7 +47,7 @@ namespace ApiProject.Controllers
             Activity[] ActivitiesFromDB;
             try
             {
-                ActivitiesFromDB = con.ActivityContainer.Where<Activity>(o => o.Customer.CustomerID == id).ToArray();
+                ActivitiesFromDB = DatabaseContextSiglenton.Context.ActivityContainer.Where<Activity>(o => o.Customer.CustomerID == id).ToArray();
             }catch(Exception e)
             {
                 Debug.WriteLine("api/Activity/id Get Controller ,[From :{0}] Encountered a fatal error {1} ",Request.Headers.From,e.Message);
@@ -79,14 +58,14 @@ namespace ApiProject.Controllers
             }
             if (ActivitiesFromDB.Length == 0)
             {
-                if (con.CustomerContainer.Find(id) == null)
+                if (DatabaseContextSiglenton.Context.CustomerContainer.Find(id) == null)
                 {
                     throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
                 }
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NoContent));
             }
             Debug.WriteLine("api/Activity/id Get Controller:     Handles Appropiate Request , Returns 200! [From {0}]",Request.Headers.From);
-            return Json(ActivitiesFromDB,JsonSettings);
+            return Json(ActivitiesFromDB, DatabaseContextSiglenton.JsonSettings);
         }
         /// <summary>Posts a new Activity for the <see cref="Customer"/> Customer with Id As Specified in <paramref name="id"/></summary>
         /// <param name="id">The <see cref="Customer"/> ID </param>
@@ -114,15 +93,15 @@ namespace ApiProject.Controllers
         {
             Debug.WriteLine("api/Activity/id Post Controller:Incoming Request POST_NEW_ACTIVITY with Activity", Utills.Utills.IFNULL(ActivityFromForm));
 
-            Customer CustomerFromDB = con.CustomerContainer.Find(id);
+            Customer CustomerFromDB = DatabaseContextSiglenton.Context.CustomerContainer.Find(id);
             if (CustomerFromDB == null) return NotFound();
             if (!Utills.Utills.isDateTimesOkay(ActivityFromForm.StartDate, ActivityFromForm.EndDate)) return BadRequest();
             //if (!ModelState.IsValid || ActivityFromForm == null) return BadRequest(); //<---- TODO : Fix this 
             ActivityFromForm.Customer = CustomerFromDB;
-            con.ActivityContainer.Add(ActivityFromForm);
+            DatabaseContextSiglenton.Context.ActivityContainer.Add(ActivityFromForm);
             try
             {
-                con.SaveChanges();
+                DatabaseContextSiglenton.Context.SaveChanges();
             }
             catch (Exception e)//Todo:Catch Specific Exceptions
             {
@@ -158,13 +137,13 @@ namespace ApiProject.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteActivityByID(int ActivityId)
         {
-            Activity ActivityFromDB_ToAttach = con.ActivityContainer.Find(ActivityId);
+            Activity ActivityFromDB_ToAttach = DatabaseContextSiglenton.Context.ActivityContainer.Find(ActivityId);
             if (ActivityFromDB_ToAttach == null) return NotFound();
-            Activity Act =con.ActivityContainer.Attach(ActivityFromDB_ToAttach);//TODO : Check if nessesary... i think not.. but i am tired ...
-            con.ActivityContainer.Remove(Act);
+            Activity Act = DatabaseContextSiglenton.Context.ActivityContainer.Attach(ActivityFromDB_ToAttach);//TODO : Check if nessesary... i think not.. but i am tired ...
+            DatabaseContextSiglenton.Context.ActivityContainer.Remove(Act);
             try
             {
-                con.SaveChanges();
+                DatabaseContextSiglenton.Context.SaveChanges();
             }
             catch (Exception e)//Todo:Catch Specific Exceptions
             {
@@ -221,7 +200,7 @@ namespace ApiProject.Controllers
         {
             Debug.WriteLine("api/Activity/id Put Controller:Incoming Request POST_NEW_ACTIVITY with Activity", Utills.Utills.IFNULL(ActivityFromForm));
             if (ActivityFromForm == null) return BadRequest();
-            Activity ActivityFromDB = con.ActivityContainer.Find(ActivityId);
+            Activity ActivityFromDB = DatabaseContextSiglenton.Context.ActivityContainer.Find(ActivityId);
             if (ActivityFromDB == null) return NotFound();
             if (ActivityFromForm.ActivityID != ActivityId) return BadRequest();// ChangeID , Not Allowed yet(?)
 

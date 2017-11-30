@@ -1,31 +1,16 @@
 ﻿using ApiProject.DBClasses;
-using ApiProject.DBClasses.DB_EFContext;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
-
+using ApiProject.DBClasses.DB_EFContext;
 namespace ApiProject.Controllers
 {
     public class CustomersController : ApiController
     {
-
-        static Context con = new Context();
-        static Newtonsoft.Json.JsonSerializerSettings JsonSettings;
-
-        static CustomersController()
-        {
-            con = new Context();
-            JsonSettings = new Newtonsoft.Json.JsonSerializerSettings();
-            JsonSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-
-        }
         /// <summary> The Main GET Method , Returns All the Customers.</summary>
         /// <remarks> The Main GET Method , Its gonna used by the main grid , 
         ///     NOTE: This call returns only the Customer Object , with no Activities Asciosiated with it , 
@@ -39,12 +24,12 @@ namespace ApiProject.Controllers
         public JsonResult<Customer[]> Get()
         {
 
-            Customer[] CustomersArray = con.CustomerContainer.ToList().ToArray();
+            Customer[] CustomersArray = DatabaseContextSiglenton.Context.CustomerContainer.ToList().ToArray();
             try
             {
                 foreach (Customer temp in CustomersArray)
                 {
-                    temp.Activities = con.ActivityContainer.Where(o => o.Customer.CustomerID == temp.CustomerID).ToList();
+                    temp.Activities = DatabaseContextSiglenton.Context.ActivityContainer.Where(o => o.Customer.CustomerID == temp.CustomerID).ToList();
                     Debug.WriteLine("--->>>" + temp.Name);
                 }
             }
@@ -60,7 +45,7 @@ namespace ApiProject.Controllers
             JsonResult<Customer[]> retval;
             try
             {
-                retval = this.Json(CustomersArray, JsonSettings);
+                retval = this.Json(CustomersArray, DatabaseContextSiglenton.JsonSettings);
 
             }
             catch (Exception e)
@@ -84,8 +69,8 @@ namespace ApiProject.Controllers
         [NonAction]
         public System.Collections.Generic.List<Activity> getActivitiesByID(int id)
         {
-            if (con.CustomerContainer.Find(id) == null) return null;
-            return con.ActivityContainer.Where(o => o.Customer.CustomerID == id).ToList<Activity>();
+            if (DatabaseContextSiglenton.Context.CustomerContainer.Find(id) == null) return null;
+            return DatabaseContextSiglenton.Context.ActivityContainer.Where(o => o.Customer.CustomerID == id).ToList<Activity>();
         }
         /// <summary>
         /// GetByID Method , Use this for obtain all information Ascociated with an Cuctomer!
@@ -97,7 +82,7 @@ namespace ApiProject.Controllers
         public JsonResult<Customer> GetByID(int id)
         {
             try{
-                Customer retval = con.CustomerContainer.Find(id);
+                Customer retval = DatabaseContextSiglenton.Context.CustomerContainer.Find(id);
                 if (retval == null)
                 {
                     throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound)
@@ -107,7 +92,7 @@ namespace ApiProject.Controllers
                     });
                 }
                 retval.Activities = this.getActivitiesByID(id);
-                return this.Json(retval, JsonSettings);
+                return this.Json(retval, DatabaseContextSiglenton.JsonSettings);
 
             }
             catch (InvalidOperationException e)
@@ -132,10 +117,10 @@ namespace ApiProject.Controllers
             {
                 return BadRequest();
             }
-            con.CustomerContainer.Add(cust);
+            DatabaseContextSiglenton.Context.CustomerContainer.Add(cust);
             try
             {
-                con.SaveChanges();
+                DatabaseContextSiglenton.Context.SaveChanges();
 
             }catch(Exception e)//TODO:Catch Specific Exceptions...
             {
@@ -178,7 +163,7 @@ namespace ApiProject.Controllers
         [Route("api/Customers/{id}")]
         public IHttpActionResult PutCustomer(int id,Customer cust)
         {
-            Customer CustomerFromDB = con.CustomerContainer.Find(id);
+            Customer CustomerFromDB = DatabaseContextSiglenton.Context.CustomerContainer.Find(id);
             if (!ModelState.IsValid || cust == null)    return BadRequest();
             if (CustomerFromDB == null)                 return NotFound();
             if (cust.CustomerID != id)                  return BadRequest();
@@ -191,19 +176,8 @@ namespace ApiProject.Controllers
                 CustomerFromDB.Name = cust.Name;
             }
             Debug.WriteLine("After: "+CustomerFromDB);
-            con.SaveChanges(); //TODO : try/catch
-
-
-
-
-
+            DatabaseContextSiglenton.Context.SaveChanges(); //TODO : try/catch
             return Ok();
         }
-
-
-
-
-
-
     }
 }
