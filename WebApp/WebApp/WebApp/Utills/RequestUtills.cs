@@ -29,8 +29,8 @@ namespace WebApp.Utills
         /// </summary>
         /// <param name="Url">Target Url</param>
         /// <param name="FormData">Raw Form Data</param>
-        /// <returns></returns>
-        public static System.String PostForm(System.String Url,System.String FormData)
+        /// <returns>True if Server Respond OK(200) , False OtherWise</returns>
+        public static bool PostForm(System.String Url,System.String FormData)
         {
             HttpWebRequest PostRequest = (HttpWebRequest)WebRequest.Create(Url);
             byte [] data = Encoding.ASCII.GetBytes(FormData);
@@ -42,8 +42,7 @@ namespace WebApp.Utills
                 stream.Write(data, 0, data.Length);
             }
             HttpWebResponse ReturnResponce = (HttpWebResponse)PostRequest.GetResponse();
-            StreamReader Reader = new StreamReader(ReturnResponce.GetResponseStream());
-            return Reader.ReadToEnd();
+            return ReturnResponce.StatusCode.Equals(HttpStatusCode.OK);
         }
     }
 }

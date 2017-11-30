@@ -19,9 +19,10 @@ namespace WebApp.Controllers
             return View();
         }
         /// <summary>
+        /// Handles Self-Post Request to submit new Customer!!
         /// ///TODO : Support Unicode
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if Web Service Respond OK(200) , False OtherWise</returns>
         [NonAction]
         public bool PostNew()
         {
@@ -32,6 +33,10 @@ namespace WebApp.Controllers
             }))){return false;}
             return true;
         }
+        /// <summary>
+        /// Checks the Post Request for nesessary Data
+        /// </summary>
+        /// <returns>true if the Post Request is valid , False OtherWise</returns>
         public bool CheckPostRequest()
         {
             if (String.IsNullOrEmpty(Request.Form["Name"])) return false;

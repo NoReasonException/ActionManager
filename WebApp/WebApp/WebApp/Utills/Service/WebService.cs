@@ -53,11 +53,18 @@ namespace WebApp.Utills.Service
             Check();
             return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers/" + Id.ToString());
         }
-
+        /// <summary>
+        /// 
+        /// Submit A new Customer to Database , Using Web Api!
+        /// uses the <see cref="WebApp.Utills.RequestUtills.PostForm(string, string)"/> Utillity
+        /// </summary>
+        /// <param name="FormData"></param>
+        /// <returns>True if everything is fine (Server Responce Ok(200) ) False OtherWise</returns>
+        /// Todo , Fix Proper Return!
         public static bool PostNewCustomer(System.Collections.Generic.Dictionary<System.String, System.String> FormData)
         {
-            WebApp.Utills.RequestUtills.PostForm(ServiceUrl+ "/api/Customers", WebApp.Utills.Service.WebServiceUtills.SubmitNewCustomer_FormEncoder(FormData));
-            return true;
+            return WebApp.Utills.RequestUtills.PostForm(ServiceUrl+ "/api/Customers", WebApp.Utills.Service.WebServiceUtills.SubmitNewCustomer_FormEncoder(FormData));
+             
         }
     }
 }
