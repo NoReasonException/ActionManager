@@ -18,11 +18,18 @@ namespace WebApp.Controllers
             }
             return View();
         }
+        /// <summary>
+        /// ///TODO : Support Unicode
+        /// </summary>
+        /// <returns></returns>
         [NonAction]
         public bool PostNew()
         {
             if (!CheckPostRequest()) return false;
-            
+            if(!(WebApp.Utills.Service.WebService.PostNewCustomer(new Dictionary<string, string> {
+                {"Name",    Request.Form["Name"] },
+                {"Address", Request.Form["Address"] }
+            }))){return false;}
             return true;
         }
         public bool CheckPostRequest()

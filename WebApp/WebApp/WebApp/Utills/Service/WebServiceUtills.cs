@@ -14,7 +14,7 @@ namespace WebApp.Utills.Service
         /// </summary>
         /// <param name="FormData">The Dictionary (with "Name" and "Address" keys included)</param>
         /// <returns>a <see cref="System.String"/> , the Html Encoded Form Data!</returns>
-        public static System.String SubmitNewCustomer_FormEncoder(System.Collections.Generic.Dictionary<System.String,System.String> FormData)
+        public static System.String SubmitNewCustomer_FormEncoder(System.Collections.Generic.Dictionary<System.String, System.String> FormData)
         {
             StringBuilder builder = new StringBuilder();
             try
@@ -25,11 +25,12 @@ namespace WebApp.Utills.Service
                 builder.Append("Address=");
                 builder.Append(FormData["Address"]);
                 return builder.ToString();
-            }catch (KeyNotFoundException e)
+            }
+            catch (KeyNotFoundException e)
             {
-                Debug.WriteLine("SubmitNewCustomer_FormEncoder encountered an error -> KeyNot Found , ITS A BUUUUGGG!!! you check the existance in NewUserController.cs:PostNew()");
-                Debug.WriteLine("Read Carefully! :" + e.Message);
-                throw new InvalidOperationException("Caused By :", e);
+                Console.WriteLine("SubmitNewCustomer_FormEncoder encountered an error -> KeyNot Found , ITS A BUUUUGGG!!! you check the existance in NewUserController.cs:PostNew()");
+                Console.WriteLine("Read Carefully! :" + e.Message);
+                throw new InvalidOperationException("Caused By undefined key! Message->:" + e.Message, e);
             }
         }
     }

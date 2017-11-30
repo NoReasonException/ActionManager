@@ -108,12 +108,13 @@ namespace ApiProject.Controllers
         }
         /// <summary>Creates New Customer , Takes Data via Form</summary>
         /// <param name="cust"> The <see cref="ApiProject.DBClasses.Customer"/> Object to add in the database!</param>
-        /// <returns>200 If everything is Okay ,400 if critical data is missing</returns>
+        /// <returns>200 If everything is Okay ,400 if critical data is missing</returns>\
+        /// Todo , Accept only name and address via form! 400 otherwise 
         [HttpPost]
         [Route("api/Customers")]
         public IHttpActionResult PostCustomer(Customer cust)
         {
-            if (!ModelState.IsValid||cust==null)
+            if (cust==null)
             {
                 return BadRequest();
             }

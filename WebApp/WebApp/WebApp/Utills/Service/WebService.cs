@@ -53,5 +53,11 @@ namespace WebApp.Utills.Service
             Check();
             return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers/" + Id.ToString());
         }
+
+        public static bool PostNewCustomer(System.Collections.Generic.Dictionary<System.String, System.String> FormData)
+        {
+            WebApp.Utills.RequestUtills.PostForm(ServiceUrl+ "/api/Customers", WebApp.Utills.Service.WebServiceUtills.SubmitNewCustomer_FormEncoder(FormData));
+            return true;
+        }
     }
 }
