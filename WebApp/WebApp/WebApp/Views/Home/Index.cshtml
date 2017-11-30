@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Αρχική";
 
 }
 <link rel="stylesheet" href="~/css/HomeStyle.css" />
@@ -24,7 +24,7 @@
                                 @Html.Raw("<td>");
                                 if (isID)
                                 {
-                                    @Html.Raw("<a href=\"EditCustomer&id="+data+"\">");
+                                    @Html.Raw("<a title=\"Επεξεργασία Πελάτη\" href=\"EditCustomer&id="+data+"\">");
                                 }
                                 
                                 @String.Format("{0}",data);
@@ -52,7 +52,7 @@
             Επιλογές... <!-- Make Responsive-->
             <div class="row">
                 <div class="col-sm-12">
-                    <button class="btn btn-sm btn-default">Νεα Καταχώρηση</button>
+                    <form action="NewUser"><button type="submit" class="btn btn-sm btn-default">Νεα Καταχώρηση</button></form>
                 </div>
             </div>
         </div>
