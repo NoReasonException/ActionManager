@@ -46,5 +46,19 @@ namespace WebApp.Utills
             HttpWebResponse ReturnResponce = (HttpWebResponse)PostRequest.GetResponse();
             return ReturnResponce.StatusCode.Equals(HttpStatusCode.OK);
         }
+        public static bool PutForm(System.String Url, System.String FormData)
+        {
+            HttpWebRequest PostRequest = (HttpWebRequest)WebRequest.Create(Url);
+            byte[] data = Encoding.ASCII.GetBytes(FormData);
+            PostRequest.Method = "PUT";
+            PostRequest.ContentType = "application/x-www-form-urlencoded";
+            PostRequest.ContentLength = data.Length;
+            using (var stream = PostRequest.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+            HttpWebResponse ReturnResponce = (HttpWebResponse)PostRequest.GetResponse();
+            return ReturnResponce.StatusCode==HttpStatusCode.OK;
+        }
     }
 }

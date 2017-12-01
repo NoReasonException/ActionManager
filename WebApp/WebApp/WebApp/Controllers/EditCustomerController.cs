@@ -19,7 +19,6 @@ namespace WebApp.Controllers
             {
                 ViewBag.Success = PostActivities();
                 
-                
             }
             if (String.IsNullOrEmpty(id)) return BadRequest();
             try
@@ -42,7 +41,37 @@ namespace WebApp.Controllers
         }
         public bool PostActivities()
         {
-            return true;
+            System.String str;
+            try
+            {
+                bool flag = true;
+                for(int i = 0; i < System.Int32.Parse(Request.Form["Results"]); i++)
+                {
+                   
+
+                    if (!(WebApp.Utills.Service.WebService.UpdateActivity(
+                        System.Int32.Parse(Request.Form["ActivityID" + i]), 
+                        new ApiProject.DBClasses.Activity(
+                            System.Int32.Parse(
+                                Request.Form["ActivityID" + i])
+                                , null
+                                , Request.Form["Description" + i]
+                                , new DateTime(2017, 1, 1)
+                                , new DateTime(2018, 1, 1)))));
+                    {
+
+                        Debug.WriteLine(Request.Form["ActivityID" + i]);
+                        Debug.WriteLine(Request.Form["Description" + i]);
+                        flag = false;
+                    }
+                }
+                return flag;
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+            
         }
     }
 }

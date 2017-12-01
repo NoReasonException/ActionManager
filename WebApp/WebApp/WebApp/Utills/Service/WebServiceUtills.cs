@@ -36,6 +36,32 @@ namespace WebApp.Utills.Service
                 throw new InvalidOperationException("Caused By undefined key! Message->:" + e.Message, e);
             }
         }
+        public static System.String UpdateActivity_FormEncoder(System.Collections.Generic.Dictionary<System.String, System.String> FormData)
+        {
+            StringBuilder builder = new StringBuilder();
+            try
+            {
+                builder.Append("ActivityID=");
+                builder.Append(FormData["ActivityID"]);
+                builder.Append("&");
+                builder.Append("Description=");
+                builder.Append(FormData["Description"]);
+                builder.Append("&");
+                builder.Append("StartDate=");
+                builder.Append(FormData["StartDate"]);
+                builder.Append("&");
+                builder.Append("EndDate=");
+                builder.Append(FormData["EndDate"]);
+                return builder.ToString();
+            }
+            catch (KeyNotFoundException e)
+            {
+                Console.WriteLine("SubmitNewCustomer_FormEncoder encountered an error -> KeyNot Found , ITS A BUUUUGGG!!! you check the existance in NewUserController.cs:PostNew()");
+                Console.WriteLine("Read Carefully! :" + e.Message);
+                throw new InvalidOperationException("Caused By undefined key! Message->:" + e.Message, e);
+            }
+        }
+
         //add doc
         public static ApiProject.DBClasses.Customer JsonToCustomerDecoder(System.String JsonString)
         {

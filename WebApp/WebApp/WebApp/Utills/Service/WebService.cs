@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApiProject.DBClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -66,6 +67,18 @@ namespace WebApp.Utills.Service
         {
             Check();
             return WebApp.Utills.RequestUtills.PostForm(ServiceUrl+ "/api/Customers", WebApp.Utills.Service.WebServiceUtills.SubmitNewCustomer_FormEncoder(FormData));
+        }
+
+        public static bool UpdateActivity(int id,Activity act)
+        {
+            return WebApp.Utills.RequestUtills.PutForm(ServiceUrl + "/api/Activity/" + id,
+                 WebApp.Utills.Service.WebServiceUtills.UpdateActivity_FormEncoder(new Dictionary<string, string>()
+                 {
+                     { "ActivityID" ,act.ActivityID.ToString()},
+                     { "Description" ,act.Description},
+                     { "StartDate" ,act.StartDate.ToString("yyyy-MM-dd HH:mm:ss")},
+                     { "EndDate" ,act.EndDate.ToString("yyyy-MM-dd HH:mm:ss")},
+                 }));
         }
     }
 }

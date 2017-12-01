@@ -201,6 +201,8 @@ namespace ApiProject.Controllers
             Debug.WriteLine("api/Activity/id Put Controller:Incoming Request POST_NEW_ACTIVITY with Activity", Utills.Utills.IFNULL(ActivityFromForm));
             if (ActivityFromForm == null) return BadRequest();
             Activity ActivityFromDB = DatabaseContextSiglenton.Context.ActivityContainer.Find(ActivityId);
+            DatabaseContextSiglenton.Context.Entry<Activity>(ActivityFromDB).State=System.Data.Entity.EntityState.Modified;
+
             if (ActivityFromDB == null) return NotFound();
             if (ActivityFromForm.ActivityID != ActivityId) return BadRequest();// ChangeID , Not Allowed yet(?)
 
@@ -221,6 +223,7 @@ namespace ApiProject.Controllers
             {
                 return BadRequest();
             }
+            DatabaseContextSiglenton.Context.SaveChanges();
             Debug.WriteLine("api/Activity/id Put Controller:   Handles Appropiate Request , Returns 200! [From {0}]", Request.Headers.From);
 
             return Ok();
