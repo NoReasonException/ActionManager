@@ -39,6 +39,8 @@ namespace WebApp.Utills.Service
         public static System.String UpdateActivity_FormEncoder(System.Collections.Generic.Dictionary<System.String, System.String> FormData)
         {
             StringBuilder builder = new StringBuilder();
+            System.String final = System.String.Empty;
+            Debug.WriteLine("UpdateActivity_FormEncoder Invoked on ActivityID" + FormData["ActivityID"]);
             try
             {
                 builder.Append("ActivityID=");
@@ -52,11 +54,13 @@ namespace WebApp.Utills.Service
                 builder.Append("&");
                 builder.Append("EndDate=");
                 builder.Append(FormData["EndDate"]);
-                return builder.ToString();
+                final = builder.ToString();
+                Debug.WriteLine("UpdateActivity_FormEncoder Finalized on ActivityID" + FormData["ActivityID"] +"Raw data -> "+final);
+                return final;
             }
             catch (KeyNotFoundException e)
             {
-                Console.WriteLine("SubmitNewCustomer_FormEncoder encountered an error -> KeyNot Found , ITS A BUUUUGGG!!! you check the existance in NewUserController.cs:PostNew()");
+                Console.WriteLine("UpdateActivity_FormEncoder encountered an error -> KeyNot Found , ITS A BUUUUGGG!!!)");
                 Console.WriteLine("Read Carefully! :" + e.Message);
                 throw new InvalidOperationException("Caused By undefined key! Message->:" + e.Message, e);
             }

@@ -1,6 +1,7 @@
 ﻿using ApiProject.DBClasses;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -69,16 +70,21 @@ namespace WebApp.Utills.Service
             return WebApp.Utills.RequestUtills.PostForm(ServiceUrl+ "/api/Customers", WebApp.Utills.Service.WebServiceUtills.SubmitNewCustomer_FormEncoder(FormData));
         }
 
-        public static bool UpdateActivity(int id,Activity act)
+        public static bool UpdateActivity(int id, ApiProject.DBClasses.Activity act)
         {
-            return WebApp.Utills.RequestUtills.PutForm(ServiceUrl + "/api/Activity/" + id,
+            Debug.WriteLine("UpdateActivity Invoked on ActivityID " + act.ActivityID);
+
+            bool status = WebApp.Utills.RequestUtills.PutForm(ServiceUrl + "/api/Activity/" + id,
                  WebApp.Utills.Service.WebServiceUtills.UpdateActivity_FormEncoder(new Dictionary<string, string>()
                  {
                      { "ActivityID" ,act.ActivityID.ToString()},
                      { "Description" ,act.Description},
                      { "StartDate" ,act.StartDate.ToString("yyyy-MM-dd HH:mm:ss")},
                      { "EndDate" ,act.EndDate.ToString("yyyy-MM-dd HH:mm:ss")},
-                 }));
+                 }));;
+            Debug.WriteLine("UpdateActivity Invoked on ActivityID {0} (returned status {1}) " , act.ActivityID,status);
+
+            return status;
         }
     }
 }

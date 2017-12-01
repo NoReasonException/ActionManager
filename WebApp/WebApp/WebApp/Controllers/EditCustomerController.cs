@@ -44,12 +44,13 @@ namespace WebApp.Controllers
             System.String str;
             try
             {
-                bool flag = true;
+                bool success = true;
+                bool stat = true;
                 for(int i = 0; i < System.Int32.Parse(Request.Form["Results"]); i++)
                 {
-                   
 
-                    if (!(WebApp.Utills.Service.WebService.UpdateActivity(
+                    Debug.WriteLine("Attemt To Sync Activity..." + Request.Form["ActivityID" + i]);
+                    if (!(stat=(WebApp.Utills.Service.WebService.UpdateActivity(
                         System.Int32.Parse(Request.Form["ActivityID" + i]), 
                         new ApiProject.DBClasses.Activity(
                             System.Int32.Parse(
@@ -57,15 +58,14 @@ namespace WebApp.Controllers
                                 , null
                                 , Request.Form["Description" + i]
                                 , new DateTime(2017, 1, 1)
-                                , new DateTime(2018, 1, 1)))));
+                                , new DateTime(2018, 1, 1))))))
                     {
 
-                        Debug.WriteLine(Request.Form["ActivityID" + i]);
-                        Debug.WriteLine(Request.Form["Description" + i]);
-                        flag = false;
+                        Debug.WriteLine("Attemt To Sync Activity{0} FAILED(Update Activity returned {1})" , Request.Form["ActivityID" + i],stat);
+                        success = false;
                     }
                 }
-                return flag;
+                return success;
             }catch(Exception e)
             {
                 Debug.WriteLine(e.Message);

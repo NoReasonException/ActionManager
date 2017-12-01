@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,11 +21,18 @@ namespace WebApp.Utills
         {
             HttpWebRequest GetRequest = (HttpWebRequest)WebRequest.Create(Url);
             GetRequest.AutomaticDecompression = DecompressionMethods.GZip; // Turn Automatic Decompress On! ()
+            try
+            {
+                HttpWebResponse ReturnResponce = (HttpWebResponse)GetRequest.GetResponse();
+                StreamReader Reader = new StreamReader(ReturnResponce.GetResponseStream());
+                return Reader.ReadToEnd();
+            }
+            catch (Exception)
+            {
 
-
-            HttpWebResponse ReturnResponce = (HttpWebResponse)GetRequest.GetResponse();
-            StreamReader Reader = new StreamReader(ReturnResponce.GetResponseStream());
-            return Reader.ReadToEnd();
+                return System.String.Empty;
+            }
+            
         }
         /// <summary>
         /// Sends A post request with application/x-www-form-urlencoded
@@ -34,6 +42,7 @@ namespace WebApp.Utills
         /// <returns>True if Server Respond OK(200) , False OtherWise</returns>
         public static bool PostForm(System.String Url,System.String FormData)
         {
+            bool status;
             HttpWebRequest PostRequest = (HttpWebRequest)WebRequest.Create(Url);
             byte [] data = Encoding.ASCII.GetBytes(FormData);
             PostRequest.Method = "POST";
@@ -42,23 +51,41 @@ namespace WebApp.Utills
             using (var stream = PostRequest.GetRequestStream())
             {
                 stream.Write(data, 0, data.Length);
+            }//in this case , a simple bool is optimal :: , we dont need exceptions and handlers everywhere!
+            try
+            {
+                HttpWebResponse ReturnResponce = (HttpWebResponse)PostRequest.GetResponse();
+                status = ReturnResponce.StatusCode == HttpStatusCode.OK;
+                Debug.WriteLine("PUT Request returned status " + status);
+                return status;
+
             }
-            HttpWebResponse ReturnResponce = (HttpWebResponse)PostRequest.GetResponse();
-            return ReturnResponce.StatusCode.Equals(HttpStatusCode.OK);
+            catch (WebException e) { return false; }
         }
         public static bool PutForm(System.String Url, System.String FormData)
         {
-            HttpWebRequest PostRequest = (HttpWebRequest)WebRequest.Create(Url);
+            Debug.WriteLine("PUT Request on {0} with data {1} ", Url,FormData);
+            bool status;
+            HttpWebRequest PutRequest = (HttpWebRequest)WebRequest.Create(Url);
             byte[] data = Encoding.ASCII.GetBytes(FormData);
-            PostRequest.Method = "PUT";
-            PostRequest.ContentType = "application/x-www-form-urlencoded";
-            PostRequest.ContentLength = data.Length;
-            using (var stream = PostRequest.GetRequestStream())
+            PutRequest.Method = "PUT";
+            PutRequest.ContentType = "application/x-www-form-urlencoded";
+            PutRequest.ContentLength = data.Length;
+            using (var stream = PutRequest.GetRequestStream())
             {
                 stream.Write(data, 0, data.Length);
             }
-            HttpWebResponse ReturnResponce = (HttpWebResponse)PostRequest.GetResponse();
-            return ReturnResponce.StatusCode==HttpStatusCode.OK;
+            //in this case , a simple bool is optimal :: , we dont need exceptions and handlers everywhere!
+            try
+            {
+                HttpWebResponse ReturnResponce = (HttpWebResponse)PutRequest.GetResponse();
+                status = ReturnResponce.StatusCode == HttpStatusCode.OK;
+                Debug.WriteLine("PUT Request returned status " + status);
+                return status;
+
+            }
+            catch(WebException e) { return false; }
+            
         }
     }
 }

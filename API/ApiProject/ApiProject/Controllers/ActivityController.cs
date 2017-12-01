@@ -206,9 +206,13 @@ namespace ApiProject.Controllers
             if (ActivityFromDB == null) return NotFound();
             if (ActivityFromForm.ActivityID != ActivityId) return BadRequest();// ChangeID , Not Allowed yet(?)
 
-            if (ActivityFromForm.Description != null)
+            if (!System.String.IsNullOrEmpty(ActivityFromForm.Description))
             {
                 ActivityFromDB.Description = ActivityFromForm.Description;
+            }
+            else
+            {
+                return BadRequest();
             }
             if (ActivityFromForm.Customer != null)
             {
