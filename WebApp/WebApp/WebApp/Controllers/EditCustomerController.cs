@@ -46,19 +46,19 @@ namespace WebApp.Controllers
             {
                 bool success = true;
                 bool stat = true;
-                for(int i = 0; i < System.Int32.Parse(Request.Form["Results"]); i++)
+                //Request.Form["StartDate"+i]
+                for (int i = 0; i < System.Int32.Parse(Request.Form["Results"]); i++)
                 {
 
                     Debug.WriteLine("Attemt To Sync Activity..." + Request.Form["ActivityID" + i]);
                     if (!(stat=(WebApp.Utills.Service.WebService.UpdateActivity(
                         System.Int32.Parse(Request.Form["ActivityID" + i]), 
                         new ApiProject.DBClasses.Activity(
-                            System.Int32.Parse(
-                                Request.Form["ActivityID" + i])
+                            System.Int32.Parse(Request.Form["ActivityID" + i])
                                 , null
                                 , Request.Form["Description" + i]
-                                , new DateTime(2017, 1, 1)
-                                , new DateTime(2018, 1, 1))))))
+                                , DateTime.ParseExact(Request.Form["StartDate"+i], "d/M/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture)
+                                , DateTime.ParseExact(Request.Form["EndDate" + i], "d/M/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture))))))
                     {
 
                         Debug.WriteLine("Attemt To Sync Activity{0} FAILED(Update Activity returned {1})" , Request.Form["ActivityID" + i],stat);
