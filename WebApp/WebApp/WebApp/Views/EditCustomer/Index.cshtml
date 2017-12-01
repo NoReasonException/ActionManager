@@ -35,7 +35,21 @@
             <h5>Κανονισμένα Ραντεβού...</h5>
             <table class"tablestyle">
                 <tr><td>Κωδικός</td><td>Περιγραφή</td><td>Ξεκινάει...</td><td>...Τελειώνει</td></tr>
-                <form><tr><td>12</td><td><input type="text" value="Meeting" name="Description" /></td><td><input type="datetime"  name="StartDate" /></td><td><input type="datetime" name="EndDate" /></td></tr></form>
+                @{/*
+                    foreach (ApiProject.DBClasses.Activity act in ViewBag.cust.Activities)
+                    {
+                        @Html.Raw("<tr>");
+                            @Html.Raw("<td>");
+                                @Html.Raw(act.ActivityID);
+                            @Html.Raw("<td>");
+
+                            @Html.Raw("<td>");
+                                @Html.Raw("<input type=\"text\" value=\""+act.Description+"\">");
+                            @Html.Raw("</td>");
+                        @Html.Raw("</tr>");
+
+                    }
+                */}
                </table>
 
         </div>

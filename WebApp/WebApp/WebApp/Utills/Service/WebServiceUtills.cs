@@ -36,18 +36,14 @@ namespace WebApp.Utills.Service
                 throw new InvalidOperationException("Caused By undefined key! Message->:" + e.Message, e);
             }
         }
-
-
-        public static ApiProject.DBClasses.Activity JTokenToCustomerDecoder(JToken JTokenData)
-        {
-            return new ApiProject.DBClasses.Activity();
-        }
+        //add doc
         public static ApiProject.DBClasses.Customer JsonToCustomerDecoder(System.String JsonString)
         {
 
 
             Customer convertedObject = new Customer();
-
+            convertedObject.Activities = new List<ApiProject.DBClasses.Activity>();
+            ApiProject.DBClasses.Activity activity;
             try
             {
                 JObject Data = (JObject)JsonConvert.DeserializeObject<Object>(JsonString);
@@ -57,15 +53,18 @@ namespace WebApp.Utills.Service
                 IEnumerable<JToken> bg = Data["Activities"].Children();
                 foreach(JToken act in bg)
                 {
-                    Debug.WriteLine(act["ActivityID"]);
+                    activity = new ApiProject.DBClasses.Activity();
+                    activity.ActivityID = System.Int32.Parse((System.String)act["ActivityID"].ToString());
+                    activity.Description = (System.String)act["Description"].ToString();
+                    activity.StartDate = new System.DateTime(2017, 1, 1);
+                    activity.EndDate = new System.DateTime(2017, 1, 1);
+                    convertedObject.Activities.Add(activity);
                 }
-                //convertedObject.Activities = (List<ApiProject.DBClasses.Activity>)bg;
-                Debug.WriteLine(convertedObject.CustomerID);
                 return convertedObject;
             }
             catch(Exception e)
             {
-                Debug.WriteLine("Err!!!");
+                Debug.WriteLine("Err!!!"+e.Message);
             }
             
             return new ApiProject.DBClasses.Customer()
