@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ApiProject.DBClasses;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,6 +35,54 @@ namespace WebApp.Utills.Service
                 Console.WriteLine("Read Carefully! :" + e.Message);
                 throw new InvalidOperationException("Caused By undefined key! Message->:" + e.Message, e);
             }
+        }
+
+
+        public static ApiProject.DBClasses.Activity JTokenToCustomerDecoder(JToken JTokenData)
+        {
+            return new ApiProject.DBClasses.Activity();
+        }
+        public static ApiProject.DBClasses.Customer JsonToCustomerDecoder(System.String JsonString)
+        {
+
+
+            Customer convertedObject = new Customer();
+
+            try
+            {
+                JObject Data = (JObject)JsonConvert.DeserializeObject<Object>(JsonString);
+                convertedObject.CustomerID = System.Int32.Parse((System.String)Data["CustomerID"]);
+                convertedObject.Name = (System.String)Data["Name"];
+                convertedObject.Address = (System.String)Data["Address"];
+                IEnumerable<JToken> bg = Data["Activities"].Children();
+                foreach(JToken act in bg)
+                {
+                    Debug.WriteLine(act["ActivityID"]);
+                }
+                //convertedObject.Activities = (List<ApiProject.DBClasses.Activity>)bg;
+                Debug.WriteLine(convertedObject.CustomerID);
+                return convertedObject;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("Err!!!");
+            }
+            
+            return new ApiProject.DBClasses.Customer()
+            {
+                CustomerID = 0,
+                Address = "NULL",
+                Name = "NULL",
+                Activities = new List<ApiProject.DBClasses.Activity>() {
+                     new ApiProject.DBClasses.Activity(){
+                         ActivityID=0,
+                         Customer=null,
+                         Description="TestActivity",
+                         StartDate=new System.DateTime(2017,1,1),
+                         EndDate=new System.DateTime(2017,1,1)
+                     },
+                }
+            };
         }
     }
 }

@@ -36,7 +36,7 @@ namespace WebApp.Utills.Service
         /// 
         /// </summary>
         /// <returns> The Responce as  <see cref="System.String"/> Object</returns>
-        public static System.String GetAllRecords()
+        public static System.String GetAllCustomers()
         {
             Check();
             return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers");
@@ -48,7 +48,7 @@ namespace WebApp.Utills.Service
         /// <param name="Id"> The ID of customer</param>
         /// <returns> The Responce as  <see cref="System.String"/> Object</returns>
 
-        public static System.String GetRecordByID(int Id)
+        public static System.String GetCustomerByID(int Id)
         {
             Check();
             return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers/" + Id.ToString());
@@ -60,11 +60,10 @@ namespace WebApp.Utills.Service
         /// </summary>
         /// <param name="FormData"></param>
         /// <returns>True if everything is fine (Server Responce Ok(200) ) False OtherWise</returns>
-        /// Todo , Fix Proper Return!
         public static bool PostNewCustomer(System.Collections.Generic.Dictionary<System.String, System.String> FormData)
         {
+            Check();
             return WebApp.Utills.RequestUtills.PostForm(ServiceUrl+ "/api/Customers", WebApp.Utills.Service.WebServiceUtills.SubmitNewCustomer_FormEncoder(FormData));
-             
         }
     }
 }

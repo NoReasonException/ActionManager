@@ -1,10 +1,14 @@
 ﻿td{
     padding-left:1% ;
-    padding.top:20px;
+    padding-top:20px;
 
 }
+tr{
 
+}
 table{
     width:70% !important;
     align-content:center;
+}
+input{
 }

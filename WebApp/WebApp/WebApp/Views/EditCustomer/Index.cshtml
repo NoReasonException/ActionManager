@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "Επεξεργασία πελάτη";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (ViewBag.Success != null)
+    {
+        if (ViewBag.Success)
+        {
+            @Html.Raw("<h1>Επιτυχία!</h1><br><h4>Θα θέλατε να δημιουργήσετε ξανά πελάτη?..</h4>");
+
+        }
+        else
+        {
+            @Html.Raw("<h1>Αποτυχία!</h1><br><h4>Συμπληρώστε σωστά τα απαιτούμενα πεδία..</h4>");
+
+
+        }
+    }
+}
+<link rel="stylesheet" href="~/css/HomeStyle.css" />
+
+<h2>Επεξεργασία Πελάτη...</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <ul>
+                <li>Κωδικός <br>@ViewBag.cust.CustomerID</li>
+                <li>Ονομα <br>@ViewBag.cust.Name</li>
+                <li>Διεύθυνση <br> @ViewBag.cust.Address</li>
+                
+            </ul>
+        </div>
+        <div class="col-sm-9">
+            <h5>Κανονισμένα Ραντεβού...</h5>
+            <table class"tablestyle">
+                <tr><td>Κωδικός</td><td>Περιγραφή</td><td>Ξεκινάει...</td><td>...Τελειώνει</td></tr>
+                <form><tr><td>12</td><td><input type="text" value="Meeting" name="Description" /></td><td><input type="datetime"  name="StartDate" /></td><td><input type="datetime" name="EndDate" /></td></tr></form>
+               </table>
+
+        </div>
+        <div class="col-sm-1">
+            Επιλογές... <!-- Make Responsive-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="DeleteCustomer"><button type="submit" class="btn btn-sm btn-default">Διαγραφή Πελάτη</button></form>
+                </div>
+
+                <div class="col-sm-12">
+                    <form action="NewActivity"><button type="submit" class="btn btn-sm btn-default">Νέο Ραντεβού</button></form>
+                </div>
+                <div class="col-sm-12">
+                    <form action=@Url.Action("Index","EditCustomer", new { id=ViewBag.cust.CustomerID })> <button type="submit" class="btn btn-sm btn-default">Αποθήκευσε</button></form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

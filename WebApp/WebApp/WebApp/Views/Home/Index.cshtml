@@ -6,15 +6,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-1">
+        <div class="col-sm-2">
             Database Stats
         </div>
-        <div class="col-sm-10">
+        <div class="col-sm-9">
                 <table class"tablestyle" >
                     <tr><td>Κωδικός</td><td>Όνομα</td><td>Διεύθυνση</td><td>Ενέργειες</td></tr>
                     @{
                         bool isID = true;
-                        System.String id = System.String.Empty;
+                        System.String idd = System.String.Empty;
                         foreach (List<System.String> temp in ViewBag.Str)
                         {
                             @Html.Raw("<tr>");
@@ -24,7 +24,7 @@
                                 @Html.Raw("<td>");
                                 if (isID)
                                 {
-                                    id = data;
+                                    idd = data;
                                     //@Html.Raw("<a title=\"Επεξεργασία Πελάτη\" href=\"EditCustomer&id="+data+"\">");
                                 }
 
@@ -40,8 +40,8 @@
                             }
                             isID = true;
                             @Html.Raw("<td><div class=\"row\"> " +
-                           "<form action=\"EditCustomer&id=" + id + "\"> <button type=\"submit\" class=\"btn btn-xs btn-default col-sm-6\">Επεξ/ία</button></form>" +
-                           "<form action=\"DeleteCustomer&id=" + id + "\"><button type=\"submit\" class=\"btn btn-xs btn-default col-sm-6\">Διαγραφή</button> </div></td></form>")
+                           "<form action="+ Url.Action("Index","EditCustomer", new { id = idd }) +"> <button type=\"submit\" class=\"btn btn-xs btn-default col-sm-6\">Επεξ/ία</button></form>" +
+                           "<form action=" + Url.Action("Index", "DeleteCustomer", new { id = idd }) + "><button type=\"submit\" class=\"btn btn-xs btn-default col-sm-6\">Διαγραφή</button> </div></td></form>")
                             @Html.Raw("</tr>");
 
 

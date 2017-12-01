@@ -19,7 +19,8 @@ namespace WebApp.Controllers
         }
         public IActionResult Index()
         {
-            System.String GetAll = Utills.Service.WebService.GetAllRecords();
+            ///TODO:Remove that , make utillity instead! />
+            System.String GetAll = Utills.Service.WebService.GetAllCustomers();
             List<List<System.String>> ToIndex = new List<List<System.String>>();
             List<System.String> Temp;
             List<Object> Data = JsonConvert.DeserializeObject<List<Object>>(GetAll);
