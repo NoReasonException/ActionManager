@@ -86,5 +86,20 @@ namespace WebApp.Utills.Service
 
             return status;
         }
+        public static bool PostActivity(int customerID,ApiProject.DBClasses.Activity act)
+        {
+            Debug.WriteLine("PostActivity Invoked on CustomerID " + customerID);
+
+            bool status = WebApp.Utills.RequestUtills.PostForm(ServiceUrl + "/api/Activity/" + customerID,
+                 WebApp.Utills.Service.WebServiceUtills.PostActivity_FormEncoder(new Dictionary<string, string>()
+                 {
+                     { "Description" ,act.Description},
+                     { "StartDate" ,act.StartDate.ToString("yyyy-MM-dd HH:mm:ss")},
+                     { "EndDate" ,act.EndDate.ToString("yyyy-MM-dd HH:mm:ss")},
+                 })); ;
+            Debug.WriteLine("PostActivity Invoked on CustomerID {0} (returned status {1}) ",customerID, status);
+
+            return status;
+        }
     }
 }

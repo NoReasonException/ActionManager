@@ -57,8 +57,8 @@ namespace WebApp.Controllers
                             System.Int32.Parse(Request.Form["ActivityID" + i])
                                 , null
                                 , Request.Form["Description" + i]
-                                , DateTime.ParseExact(Request.Form["StartDate"+i], "d/M/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture)
-                                , DateTime.ParseExact(Request.Form["EndDate" + i], "d/M/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture))))))
+                                , Utills.MiscUtills.ConvertFromHtmlDateTimeFormat(Request.Form["StartDate"+i])
+                                , Utills.MiscUtills.ConvertFromHtmlDateTimeFormat(Request.Form["EndDate"+i]))))))// TODO:handle bad data better
                     {
 
                         Debug.WriteLine("Attemt To Sync Activity{0} FAILED(Update Activity returned {1})" , Request.Form["ActivityID" + i],stat);

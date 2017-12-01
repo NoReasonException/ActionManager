@@ -72,11 +72,7 @@
             Επιλογές... <!-- Make Responsive-->
             <div class="row">
                 <div class="col-sm-12">
-                    <form action="DeleteCustomer"><button type="submit" class="btn btn-sm btn-default">Διαγραφή Πελάτη</button></form>
-                </div>
-
-                <div class="col-sm-12">
-                    <form action="NewActivity"><button type="submit" class="btn btn-sm btn-default">Νέο Ραντεβού</button></form>
+                    <form action="@Url.Action("Index","NewActivity",new {id = ViewBag.cust.CustomerID})"><button type="submit" class="btn btn-sm btn-default">Νέο Ραντεβού</button></form>
                 </div>
                 <div class="col-sm-12">
                     <button type="submit" form="SaveChanges" class="btn btn-sm btn-default">Αποθήκευσε</button>

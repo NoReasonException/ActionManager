@@ -40,8 +40,7 @@
                             }
                             isID = true;
                             @Html.Raw("<td><div class=\"row\"> " +
-                           "<form action="+ Url.Action("Index","EditCustomer", new { id = idd }) +"> <button type=\"submit\" class=\"btn btn-xs btn-default col-sm-6\">Επεξ/ία</button></form>" +
-                           "<form action=" + Url.Action("Index", "DeleteCustomer", new { id = idd }) + "><button type=\"submit\" class=\"btn btn-xs btn-default col-sm-6\">Διαγραφή</button> </div></td></form>")
+                           "<form action="+ Url.Action("Index","EditCustomer", new { id = idd }) +"> <button type=\"submit\" class=\"btn btn-xs btn-default col-sm-12\">Επεξεργασία</button></form>") ;
                             @Html.Raw("</tr>");
 
 

@@ -96,23 +96,30 @@ namespace WebApp.Utills.Service
             {
                 throw new JsonReaderException();
             }
-            /*
-            return new ApiProject.DBClasses.Customer()
+        }
+        public static System.String PostActivity_FormEncoder(System.Collections.Generic.Dictionary<System.String,System.String> FormData){
+            StringBuilder builder = new StringBuilder();
+            System.String final = System.String.Empty;
+            try
             {
-                CustomerID = 0,
-                Address = "NULL",
-                Name = "NULL",
-                Activities = new List<ApiProject.DBClasses.Activity>() {
-                     new ApiProject.DBClasses.Activity(){
-                         ActivityID=0,
-                         Customer=null,
-                         Description="TestActivity",
-                         StartDate=new System.DateTime(2017,1,1),
-                         EndDate=new System.DateTime(2017,1,1)
-                     },
-                }
-            };*/
-
+                builder.Append("Description=");
+                builder.Append(FormData["Description"]);
+                builder.Append("&");
+                builder.Append("StartDate=");
+                builder.Append(FormData["StartDate"]);
+                builder.Append("&");
+                builder.Append("EndDate=");
+                builder.Append(FormData["EndDate"]);
+                final = builder.ToString();
+                Debug.WriteLine("PostActivity_FormEncoder Finalized  Raw data -> " + final);
+                return final;
+            }
+            catch (KeyNotFoundException e)
+            {
+                Console.WriteLine("PostActivity_FormEncoder encountered an error -> KeyNot Found , ITS A BUUUUGGG!!!)");
+                Console.WriteLine("Read Carefully! :" + e.Message);
+                throw new InvalidOperationException("Caused By undefined key! Message->:" + e.Message, e);
+            }
         }
     }
 }
