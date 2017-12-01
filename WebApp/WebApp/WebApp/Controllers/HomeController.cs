@@ -8,9 +8,11 @@ using WebApp.Models;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace WebApp.Controllers
 {
+    //todo , when api not respond , redirect to error..
     public class HomeController : Controller
     {
         static HomeController()
@@ -20,25 +22,34 @@ namespace WebApp.Controllers
         public IActionResult Index()
         {
             ///TODO:Remove that , make utillity instead! />
-            System.String GetAll = Utills.Service.WebService.GetAllCustomers();
-            List<List<System.String>> ToIndex = new List<List<System.String>>();
-            List<System.String> Temp;
-            List<Object> Data = JsonConvert.DeserializeObject<List<Object>>(GetAll);
-            foreach(JObject Datum in Data)
+            try
             {
-                Temp = new List<System.String>();
+
+                System.String GetAll = Utills.Service.WebService.GetAllCustomers();
+                List<List<System.String>> ToIndex = new List<List<System.String>>();
+                List<System.String> Temp;
+                List<Object> Data = JsonConvert.DeserializeObject<List<Object>>(GetAll);
+                foreach (JObject Datum in Data)
+                {
+                    Temp = new List<System.String>();
 
 
-                Temp.Add(Datum["CustomerID"].ToString());
-                Temp.Add(Datum["Name"].ToString());
-                Temp.Add(Datum["Address"].ToString());
-                ToIndex.Add(Temp);
+                    Temp.Add(Datum["CustomerID"].ToString());
+                    Temp.Add(Datum["Name"].ToString());
+                    Temp.Add(Datum["Address"].ToString());
+                    ToIndex.Add(Temp);
+                }
+
+                ViewBag.Str = ToIndex;
+                return View();
+
+
+            }catch(WebException e)
+            {
+                return BadRequest(); //Server is down!//todo , fixit
             }
 
-            ViewBag.Str = ToIndex;
-            return View();
         }
-
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });

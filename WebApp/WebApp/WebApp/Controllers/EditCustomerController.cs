@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ApiProject.DBClasses;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace WebApp.Controllers
 {
@@ -25,13 +27,18 @@ namespace WebApp.Controllers
                 Customer cust = WebApp.Utills.Service.WebServiceUtills.JsonToCustomerDecoder(WebApp.Utills.Service.WebService.GetCustomerByID(System.Int32.Parse(id)));
                 ViewBag.cust = cust;
                 Debug.WriteLine(cust.CustomerID);
-                 return View();
-            }catch(Exception e)
+                 
+            }catch(WebException e)
             {
+                return BadRequest(); //id not found or server down , redirect to error!
+
                 //TODO : Fix it properly
             }
-            return BadRequest();
-            
+            catch(JsonReaderException e)
+            {
+                return BadRequest(); //Better return 500? 
+            }
+            return View();
         }
         public bool PostActivities()
         {

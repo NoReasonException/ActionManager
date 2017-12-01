@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WebApp.Utills;
 namespace WebApp.Utills.Service
@@ -52,6 +53,7 @@ namespace WebApp.Utills.Service
         {
             Check();
             return WebApp.Utills.RequestUtills.Get(WebService.ServiceUrl + "/api/Customers/" + Id.ToString());
+
         }
         /// <summary>
         /// 

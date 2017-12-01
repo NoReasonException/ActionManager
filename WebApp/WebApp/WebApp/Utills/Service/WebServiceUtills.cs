@@ -56,17 +56,17 @@ namespace WebApp.Utills.Service
                     activity = new ApiProject.DBClasses.Activity();
                     activity.ActivityID = System.Int32.Parse((System.String)act["ActivityID"].ToString());
                     activity.Description = (System.String)act["Description"].ToString();
-                    activity.StartDate = new System.DateTime(2017, 1, 1);
-                    activity.EndDate = new System.DateTime(2017, 1, 1);
+                    activity.StartDate = (System.DateTime)act["StartDate"];
+                    activity.EndDate = (System.DateTime)act["EndDate"];
                     convertedObject.Activities.Add(activity);
                 }
                 return convertedObject;
             }
             catch(Exception e)
             {
-                Debug.WriteLine("Err!!!"+e.Message);
+                throw new JsonReaderException();
             }
-            
+            /*
             return new ApiProject.DBClasses.Customer()
             {
                 CustomerID = 0,
@@ -81,7 +81,8 @@ namespace WebApp.Utills.Service
                          EndDate=new System.DateTime(2017,1,1)
                      },
                 }
-            };
+            };*/
+
         }
     }
 }
