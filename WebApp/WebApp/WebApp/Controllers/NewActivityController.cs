@@ -23,12 +23,19 @@ namespace WebApp.Controllers
         [NonAction]
         public bool PostActivity(System.Int32 CustomerID)
         {
-            return WebApp.Utills.Service.WebService.PostActivity(CustomerID, new ApiProject.DBClasses.Activity(
-                0,
-                null,
-                Request.Form["Description"],
-                WebApp.Utills.MiscUtills.ConvertFromHtmlDateTimeFormat(Request.Form["StartDate"]),
-               WebApp.Utills.MiscUtills.ConvertFromHtmlDateTimeFormat(Request.Form["EndDate"])));
+            try
+            {
+                return WebApp.Utills.Service.WebService.PostActivity(CustomerID, new ApiProject.DBClasses.Activity(
+                                0,
+                                null,
+                                Request.Form["Description"],
+                                WebApp.Utills.MiscUtills.ConvertFromHtmlDateTimeFormat(Request.Form["StartDate"]),
+                               WebApp.Utills.MiscUtills.ConvertFromHtmlDateTimeFormat(Request.Form["EndDate"])));
+            }catch(FormatException e)
+            {
+                return false; // Invalid DateTime !
+            }
+            
             
         }
     }

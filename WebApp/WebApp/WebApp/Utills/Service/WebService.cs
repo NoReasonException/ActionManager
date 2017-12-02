@@ -72,6 +72,7 @@ namespace WebApp.Utills.Service
 
         public static bool UpdateActivity(int id, ApiProject.DBClasses.Activity act)
         {
+            Check();
             Debug.WriteLine("UpdateActivity Invoked on ActivityID " + act.ActivityID);
 
             bool status = WebApp.Utills.RequestUtills.PutForm(ServiceUrl + "/api/Activity/" + id,
@@ -88,6 +89,7 @@ namespace WebApp.Utills.Service
         }
         public static bool PostActivity(int customerID,ApiProject.DBClasses.Activity act)
         {
+            Check();
             Debug.WriteLine("PostActivity Invoked on CustomerID " + customerID);
 
             bool status = WebApp.Utills.RequestUtills.PostForm(ServiceUrl + "/api/Activity/" + customerID,
